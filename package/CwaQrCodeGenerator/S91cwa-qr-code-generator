@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# cwa-qr-code-generator  Starts cwa-qr-code-generator.
+#
+
+# Make sure the cwa-qr-code-generator exists
+[ -f /usr/bin/cwa-qr-code-generator ] || exit 1
+
+DAEMON="/usr/bin/cwa-qr-code-generator"
+ARGS="/boot/cwa-qr.conf"
+PIDFILE="/var/run/cwa-qr-code-generator.pid"
+LOGFILE="/var/log/cwa-qr-code-generator.log"
+
+start() {
+        printf 'Starting %s: ' "$DAEMON"
+        start-stop-daemon --start --quiet \
+            --make-pidfile --pidfile $PIDFILE --background \
+            --startas /bin/sh -- -c "exec $DAEMON $ARGS > $LOGFILE 2>&1"
+
+        status=$?
+        if [ "$status" -eq 0 ]; then
+                echo "OK"
+        else
+                echo "FAIL"
+        fi
+        return "$status"
+}
+
+stop() {
+        printf 'Stopping %s: ' "$DAEMON"
+        start-stop-daemon -K -q -o -p "$PIDFILE"
+        status=$?
+        if [ "$status" -eq 0 ]; then
+                rm -f "$PIDFILE"
+                echo "OK"
+        else
+                echo "FAIL"
+        fi
+        return "$status"
+}
+
+restart() {
+        stop
+        sleep 1
+        start
+}
+
+case "$1" in
+        start|stop|restart)
+                "$1";;
+        reload)
+                # Restart, since there is no true "reload" feature.
+                restart;;
+        *)
+                echo "Usage: $0 {start|stop|restart|reload}"
+                exit 1
+esac
