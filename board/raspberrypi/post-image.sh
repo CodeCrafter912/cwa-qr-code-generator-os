@@ -60,6 +60,7 @@ done
 # pre-built one in the disk image.
 
 cp "${BOARD_DIR}/cwa-qr.conf" "${BINARIES_DIR}/cwa-qr.conf"
+cp "${BOARD_DIR}/cwa-wifi.conf" "${BINARIES_DIR}/cwa-wifi.conf"
 
 trap 'rm -rf "${ROOTPATH_TMP}"' EXIT
 ROOTPATH_TMP="$(mktemp -d)"

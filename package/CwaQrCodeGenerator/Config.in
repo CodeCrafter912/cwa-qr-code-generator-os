@@ -7,6 +7,8 @@ config BR2_PACKAGE_CWAQRCODEGENERATOR
     select BR2_PACKAGE_QT5BASE_PNG
     select BR2_PACKAGE_QT5BASE_WIDGETS
     select BR2_PACKAGE_PROTOBUF
+    select BR2_PACKAGE_RNG_TOOLS
+    select BR2_PACKAGE_RNG_TOOLS_JITTERENTROPY_LIBRARY
     help
       This package contains the cwa-qr-code-generator.
 
