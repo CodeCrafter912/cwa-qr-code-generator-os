@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# Functions
+push_progress_to() {
+	until [ $SPLASH_PROGRESS = $1 ]
+	do
+		sleep 0.01
+		SPLASH_PROGRESS=$((SPLASH_PROGRESS+1))
+		# (has to be written twice due to a psplash bug)
+		psplash-write "PROGRESS $SPLASH_PROGRESS"
+		psplash-write "PROGRESS $SPLASH_PROGRESS"
+	done
+}
+# End - Functions
+
+# start psplash
+psplash &
+
+# count scripts to be executed
+INIT_SCRIPT_COUNT=0
+for i in /etc/init.d/S??* ;do
+	# Ignore dangling symlinks (if any).
+	[ ! -f "$i" ] && continue
+	INIT_SCRIPT_COUNT=$((INIT_SCRIPT_COUNT+1))
+done
+
+# calculate the step size for the progress bar
+SPLASH_PROGRESS_STEP=$((100/INIT_SCRIPT_COUNT))
+SPLASH_PROGRESS=0
+
+# Start all init scripts in /etc/init.d
+# executing them in numerical order.
+#
+for i in /etc/init.d/S??* ;do
+
+	# Ignore dangling symlinks (if any).
+	[ ! -f "$i" ] && continue
+
+	# write out message
+	PSPLASH_MSG="Initializing $(basename "$i" | sed 's/[0-9]//g' | sed 's/^S//g' )"
+	# (has to be written twice due to a psplash bug)
+	psplash-write "MSG $PSPLASH_MSG"
+	psplash-write "MSG $PSPLASH_MSG"
+
+	case "$i" in
+	*.sh)
+	    # Source shell script for speed.
+	    (
+		trap - INT QUIT TSTP
+		set start
+		. $i
+	    )
+	    ;;
+	*)
+	    # No sh extension, so fork subprocess.
+	    $i start
+	    ;;
+    esac
+
+	# push up progress
+	THIS_SPLASH_PROGRESS_TARGET=$((SPLASH_PROGRESS+SPLASH_PROGRESS_STEP))
+	push_progress_to $THIS_SPLASH_PROGRESS_TARGET
+done
+
+push_progress_to 100

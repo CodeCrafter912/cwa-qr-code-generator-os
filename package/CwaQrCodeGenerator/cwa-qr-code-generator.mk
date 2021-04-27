@@ -2,11 +2,10 @@
 # Buildroot package makefile for the CWAQRCODEGENERATOR
 #
 
-CWAQRCODEGENERATOR_SITE=/home/dorian/Documents/git/cwa-qr-code-generator
-CWAQRCODEGENERATOR_SITE_METHOD=local
-
-#CWAQRCODEGENERATOR_SITE = $(call github,CodeCrafter912,cwa-qr-code-generator-os,master)
-#CWAQRCODEGENERATOR_VERSION=master
+#CWAQRCODEGENERATOR_SITE=/home/dorian/Documents/git/cwa-qr-code-generator
+#CWAQRCODEGENERATOR_SITE_METHOD=local
+CWAQRCODEGENERATOR_VERSION=v1.0.0
+CWAQRCODEGENERATOR_SITE=$(call github,CodeCrafter912,cwa-qr-code-generator,$(CWAQRCODEGENERATOR_VERSION))
 CWAQRCODEGENERATOR_INSTALL_TARGET=YES
 
 define CWAQRCODEGENERATOR_CONFIGURE_CMDS

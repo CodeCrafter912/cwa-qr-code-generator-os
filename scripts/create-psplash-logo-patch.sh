@@ -2,7 +2,7 @@
 
 script_root="$(dirname $(readlink -f "$0"))"
 project_root="$(readlink -f $script_root/../)"
-psplash_source_package=$project_root/buildroot/dl/psplash/psplash-*.tar.gz
+psplash_source_package=$project_root/dl/psplash/psplash-*.tar.gz
 
 [ -z $1 ] && echo "Usage: $0 <image path>.png" && exit 1
 [ ! -f $1 ] && echo "File $1 does not exist" && exit 1

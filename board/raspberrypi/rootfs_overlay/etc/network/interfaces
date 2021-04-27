@@ -9,6 +9,7 @@ iface lo inet loopback
 auto wlan0
 iface wlan0 inet dhcp
     pre-up wpa_supplicant -B -Dnl80211 -iwlan0 -c/boot/cwa-wifi.conf
+    post-up ntpd -gq
     post-down killall -q wpa_supplicant
     wait-delay 15
 iface default inet dhcp
