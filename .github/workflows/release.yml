@@ -18,7 +18,7 @@ jobs:
 
       - name: Build raspberrypi0w
         run: |
-          pwd
+          git submodule update --init
           make raspberrypi0w_defconfig
           make raspberrypi0w_all
           mv outputs/raspberrypi0w/images/sdcard.zip outputs/raspberrypi0w/images/raspberrypi0w.zip
