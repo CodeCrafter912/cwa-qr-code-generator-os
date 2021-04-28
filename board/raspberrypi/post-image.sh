@@ -72,6 +72,8 @@ genimage \
 	--tmppath "${GENIMAGE_TMP}"    \
 	--inputpath "${BINARIES_DIR}"  \
 	--outputpath "${BINARIES_DIR}" \
-	--config "${GENIMAGE_CFG}"
+	--config "${GENIMAGE_CFG}" || exit 1
 
-exit $?
+cd ${BINARIES_DIR}
+
+zip sdcard.zip sdcard.img 
