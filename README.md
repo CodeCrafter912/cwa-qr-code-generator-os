@@ -21,6 +21,10 @@ It has the format of a `wpa_supplicant.conf`. For basic wifis with Wpa2 PSK, the
 # Building
 To build, clone the repo and run these commands: (tested on Ubuntu 20.04)
 ```
+git clone https://github.com/CodeCrafter912/cwa-qr-code-generator-os.git
+cd cwa-qr-code-generator-os
+git submodule update --init
 make raspberrypi0w_defconfig
 make raspberrypi0w_all
 ```
+Plase note: depending on your CPU this may take several hours. It will consume about 10G of storge.
