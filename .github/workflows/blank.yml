@@ -1,0 +1,60 @@
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+  workflow_dispatch:
+
+name: Build Release
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build raspberrypi0w
+        run: |
+          make raspberrypi0w_defconfig
+          make raspberrypi0w_all
+          mv outputs/raspberrypi0w/images/sdcard.zip outputs/raspberrypi0w/images/raspberrypi0w.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: raspberrypi0w
+          path: outputs/*/images/*.zip
+        
+  github-release:
+    needs: build
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    name: GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: raspberrypi0w
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        id: upload-release-assets
+        uses: dwenegar/upload-release-assets@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ steps.create_release.outputs.id }}
+          assets_path: .
