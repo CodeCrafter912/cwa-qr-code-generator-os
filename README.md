@@ -2,6 +2,9 @@
 [![Build Release](https://github.com/CodeCrafter912/cwa-qr-code-generator-os/actions/workflows/release.yml/badge.svg)](https://github.com/CodeCrafter912/cwa-qr-code-generator-os/actions/workflows/release.yml)  
 A tiny OS for raspberry pis which run the [cwa-qr-code-generator](https://github.com/CodeCrafter912/cwa-qr-code-generator)
 
+# Picture
+<img src=".github/assets/picture.jpg" width="300px"/>
+
 # Installation
 For installing, please follow these steps:
 1. Download the [latest release](https://github.com/CodeCrafter912/cwa-qr-code-generator-os/releases/latest)
