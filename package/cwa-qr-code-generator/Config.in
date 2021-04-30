@@ -1,4 +1,4 @@
-config BR2_PACKAGE_CWAQRCODEGENERATOR
+config BR2_PACKAGE_CWA_QR_CODE_GENERATOR
     bool "cwa-qr-code-generator"
     depends on BR2_PACKAGE_QT5
     select BR2_PACKAGE_QT5BASE

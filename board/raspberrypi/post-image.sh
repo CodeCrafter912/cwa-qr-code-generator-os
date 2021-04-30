@@ -76,4 +76,4 @@ genimage \
 
 cd ${BINARIES_DIR}
 
-zip sdcard.zip sdcard.img 
+zip ${BOARD_NAME}.zip sdcard.img 

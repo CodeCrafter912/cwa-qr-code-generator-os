@@ -21,12 +21,11 @@ jobs:
           git submodule update --init
           make raspberrypi0w_defconfig
           make raspberrypi0w_all
-          mv outputs/raspberrypi0w/images/sdcard.zip outputs/raspberrypi0w/images/raspberrypi0w.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: raspberrypi0w
+          name: images
           path: outputs/*/images/*.zip
         
   github-release:
@@ -38,7 +37,12 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: raspberrypi0w
+          name: images
+
+      - name: Copy images to common dir
+        run: |
+          mkdir -p release-uploads
+          cp outputs/*/images/*.zip release-uploads
 
       - name: Create Release
         id: create_release
@@ -58,4 +62,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           release_id: ${{ steps.create_release.outputs.id }}
-          assets_path: .
+          assets_path: release-uploads/
